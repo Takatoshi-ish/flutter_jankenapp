@@ -41,13 +41,35 @@ class JankenPage extends StatefulWidget {
 class _JankenPageState extends State<JankenPage> {
   String myHand = '✊';
   String computerHand = '✊';
-  String result = '引き分け';
+  String result = '試合中';
+  int matchCount = 0; //試合数を入れる変数
+  Map<String, int> matchResult = {
+    //試合結果を記録する変数
+    'Win': 0,
+    'Drow': 0,
+    'Lose': 0,
+  };
 
   void selectHand(String selectedHand) {
+    if (matchCount == 5) {
+      result = '試合中';
+      matchCount = 0;
+      matchResult = {
+        //試合結果を記録する変数
+        'Win': 0,
+        'Drow': 0,
+        'Lose': 0,
+      };
+    }
     myHand = selectedHand;
     print(myHand);
     generateComputerHand();
     judge();
+    matchCount++; //試合ごとにプラス１する
+    print("試合数：${matchCount}");
+    if (matchCount == 5) {
+      winAndLose();
+    }
     setState(() {});
   }
 
@@ -70,13 +92,40 @@ class _JankenPageState extends State<JankenPage> {
     }
   }
 
+  // void judge() {
+  //   if (myHand == computerHand) {
+  //     result = '引き分け';
+  //   } else if (myHand == '✊' && computerHand == '✌️' ||
+  //       myHand == '✌️' && computerHand == '🖐' ||
+  //       myHand == '🖐' && computerHand == '✊') {
+  //     result = '勝ち';
+  //   } else {
+  //     result = '負け';
+  //   }
+  //   matchResult.add(result); //試合のたびに結果を記録する
+  // }
+
   void judge() {
     if (myHand == computerHand) {
-      result = '引き分け';
+      matchResult['Drow'] = matchResult['Drow']! + 1;
+      print("自分：${myHand}, 相手：${computerHand}  引き分け");
     } else if (myHand == '✊' && computerHand == '✌️' ||
         myHand == '✌️' && computerHand == '🖐' ||
         myHand == '🖐' && computerHand == '✊') {
+      matchResult['Win'] = matchResult['Win']! + 1;
+      print("自分：${myHand}, 相手：${computerHand} 勝ち");
+    } else {
+      matchResult['Lose'] = matchResult['Lose']! + 1;
+      print("自分：${myHand}, 相手：${computerHand} 負け");
+    }
+  }
+
+  //５試合の結果を出力
+  void winAndLose() {
+    if (matchResult['Win']! > 3) {
       result = '勝ち';
+    } else if (matchResult['Win']! == 2 && matchResult['Drow'] == 1) {
+      result = '引き分け';
     } else {
       result = '負け';
     }
@@ -94,6 +143,10 @@ class _JankenPageState extends State<JankenPage> {
           children: [
             Text(
               result,
+              style: TextStyle(fontSize: 32),
+            ),
+            Text(
+              "試合数：${matchCount}試合目",
               style: TextStyle(fontSize: 32),
             ),
             SizedBox(height: 48),
