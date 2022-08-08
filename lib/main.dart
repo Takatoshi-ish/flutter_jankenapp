@@ -11,11 +11,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Jankenpon App',
+      title: 'Janken App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: JankenPage(),
+      home: const JankenPage(),
     );
   }
 }
