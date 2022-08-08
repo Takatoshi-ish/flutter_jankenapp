@@ -56,7 +56,7 @@ class _JankenPageState extends State<JankenPage> {
     generateComputerHand();
     judge();
     matchCount++; //試合ごとにプラス１する
-    print("試合数：${matchCount}");
+    print('試合数：${matchCount}');
     if (matchCount == 5) {
       winAndLose();
     }
@@ -123,7 +123,7 @@ class _JankenPageState extends State<JankenPage> {
               style: TextStyle(fontSize: 32),
             ),
             Text(
-              "試合数：${matchCount}試合目",
+              '試合数：${matchCount}試合目',
               style: TextStyle(fontSize: 32),
             ),
             const SizedBox(height: 48),
