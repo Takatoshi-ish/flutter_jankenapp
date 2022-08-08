@@ -119,21 +119,21 @@ class _JankenPageState extends State<JankenPage> {
           children: [
             Text(
               result,
-              style: TextStyle(fontSize: 32),
+              style: const TextStyle(fontSize: 32),
             ),
             Text(
               '試合数：${matchCount}試合目',
-              style: TextStyle(fontSize: 32),
+              style: const TextStyle(fontSize: 32),
             ),
             const SizedBox(height: 48),
             Text(
               computerHand,
-              style: TextStyle(fontSize: 32),
+              style: const TextStyle(fontSize: 32),
             ),
             const SizedBox(height: 48),
             Text(
               myHand,
-              style: TextStyle(fontSize: 32),
+              style: const TextStyle(fontSize: 32),
             ),
             const SizedBox(height: 16),
             Row(
