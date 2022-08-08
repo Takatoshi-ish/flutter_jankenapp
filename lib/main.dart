@@ -36,7 +36,7 @@ class _JankenPageState extends State<JankenPage> {
   Map<String, int> matchResult = {
     //試合結果を記録する変数
     'Win': 0,
-    'Drow': 0,
+    'Draw': 0,
     'Lose': 0,
   };
 
@@ -47,7 +47,7 @@ class _JankenPageState extends State<JankenPage> {
       matchResult = {
         //試合結果を記録する変数
         'Win': 0,
-        'Drow': 0,
+        'Draw': 0,
         'Lose': 0,
       };
     }
@@ -84,7 +84,7 @@ class _JankenPageState extends State<JankenPage> {
 
   void judge() {
     if (myHand == computerHand) {
-      matchResult['Drow'] = matchResult['Drow']! + 1;
+      matchResult['Draw'] = matchResult['Draw']! + 1;
       print("自分：${myHand}, 相手：${computerHand}  引き分け");
     } else if (myHand == '✊' && computerHand == '✌️' ||
         myHand == '✌️' && computerHand == '🖐' ||
@@ -101,7 +101,7 @@ class _JankenPageState extends State<JankenPage> {
   void winAndLose() {
     if (matchResult['Win']! > 3) {
       result = '勝ち';
-    } else if (matchResult['Win']! == 2 && matchResult['Drow'] == 1) {
+    } else if (matchResult['Win']! == 2 && matchResult['Draw'] == 1) {
       result = '引き分け';
     } else {
       result = '負け';
