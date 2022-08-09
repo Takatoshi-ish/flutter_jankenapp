@@ -121,14 +121,14 @@ class _JankenPageState extends State<JankenPage> {
               result,
               style: const TextStyle(fontSize: 32),
             ),
-            const SizedBox(height: 25),
+            const SizedBox(height: 15),
             if (matchCount == 5) ...{
               Text(
                 '勝ち:${matchResult['Win']}回 負け:${matchResult['Lose']}回 引き分け:${matchResult['Draw']}回',
                 style: const TextStyle(fontSize: 25),
               ),
+              const SizedBox(height: 15),
             },
-            const SizedBox(height: 25),
             Text(
               '試合数：${matchCount}試合目',
               style: const TextStyle(fontSize: 32),
