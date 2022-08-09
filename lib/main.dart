@@ -98,7 +98,7 @@ class _JankenPageState extends State<JankenPage> {
 
   //５試合の結果を出力
   void winAndLose() {
-    if (matchResult['Win']! > 3) {
+    if (matchResult['Win']! >= 3) {
       result = '勝ち';
     } else if (matchResult['Win']! == 2 && matchResult['Draw'] == 1) {
       result = '引き分け';
@@ -121,6 +121,14 @@ class _JankenPageState extends State<JankenPage> {
               result,
               style: const TextStyle(fontSize: 32),
             ),
+            const SizedBox(height: 25),
+            if (matchCount == 5) ...{
+              Text(
+                '勝ち:${matchResult['Win']}回 負け:${matchResult['Lose']}回 引き分け:${matchResult['Draw']}回',
+                style: const TextStyle(fontSize: 25),
+              ),
+            },
+            const SizedBox(height: 25),
             Text(
               '試合数：${matchCount}試合目',
               style: const TextStyle(fontSize: 32),
