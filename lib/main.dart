@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -32,6 +33,8 @@ class _JankenPageState extends State<JankenPage> {
   String computerHand = '✊';
   String result = '試合中';
   int matchCount = 0; //試合数を入れる変数
+
+  /// Mapで勝ち負けをカウントしていく発想はいいかも
   Map<String, int> matchResult = {
     //試合結果を記録する変数
     'Win': 0,
@@ -55,7 +58,7 @@ class _JankenPageState extends State<JankenPage> {
     generateComputerHand();
     judge();
     matchCount++; //試合ごとにプラス１する
-    print('試合数：${matchCount}');
+    print('試合数：$matchCount');
     if (matchCount == 5) {
       winAndLose();
     }
@@ -84,15 +87,15 @@ class _JankenPageState extends State<JankenPage> {
   void judge() {
     if (myHand == computerHand) {
       matchResult['Draw'] = matchResult['Draw']! + 1;
-      print("自分：${myHand}, 相手：${computerHand}  引き分け");
+      print("自分：$myHand, 相手：$computerHand  引き分け");
     } else if (myHand == '✊' && computerHand == '✌️' ||
         myHand == '✌️' && computerHand == '🖐' ||
         myHand == '🖐' && computerHand == '✊') {
       matchResult['Win'] = matchResult['Win']! + 1;
-      print("自分：${myHand}, 相手：${computerHand} 勝ち");
+      print("自分：$myHand, 相手：$computerHand 勝ち");
     } else {
       matchResult['Lose'] = matchResult['Lose']! + 1;
-      print("自分：${myHand}, 相手：${computerHand} 負け");
+      print("自分：$myHand, 相手：$computerHand 負け");
     }
   }
 
@@ -130,7 +133,7 @@ class _JankenPageState extends State<JankenPage> {
               const SizedBox(height: 15),
             },
             Text(
-              '試合数：${matchCount}試合目',
+              '試合数：$matchCount試合目',
               style: const TextStyle(fontSize: 32),
             ),
             const SizedBox(height: 48),
