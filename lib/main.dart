@@ -137,6 +137,7 @@ class _JankenPageState extends State<JankenPage> {
               style: const TextStyle(fontSize: 32),
             ),
             const SizedBox(height: 15),
+            // ...{} で展開できるのか。知らなかった。
             if (matchCount == 5) ...{
               Text(
                 '勝ち:${matchResult['Win']}回 負け:${matchResult['Lose']}回 引き分け:${matchResult['Draw']}回',
