@@ -42,16 +42,23 @@ class _JankenPageState extends State<JankenPage> {
     'Lose': 0,
   };
 
+  /// 意味のあるまとまりで関数化した方がコードが読みやすくなる
+
+  /// ゲームをリセットする
+  void resetGame() {
+    result = '試合中';
+    matchCount = 0;
+    matchResult = {
+      //試合結果を記録する変数
+      'Win': 0,
+      'Draw': 0,
+      'Lose': 0,
+    };
+  }
+
   void selectHand(String selectedHand) {
     if (matchCount == 5) {
-      result = '試合中';
-      matchCount = 0;
-      matchResult = {
-        //試合結果を記録する変数
-        'Win': 0,
-        'Draw': 0,
-        'Lose': 0,
-      };
+      resetGame();
     }
     myHand = selectedHand;
     print(myHand);
