@@ -107,6 +107,11 @@ class _JankenPageState extends State<JankenPage> {
   }
 
   //５試合の結果を出力
+
+  // これだと勝っているのに負け判定になる場合がありそう。
+  // たとえば...
+  //  引き分け・引き分け・引き分け・引き分け・勝ち
+  // このときも負け判定になってしまう
   void winAndLose() {
     if (matchResult['Win']! >= 3) {
       result = '勝ち';
