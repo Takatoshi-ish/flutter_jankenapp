@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -32,6 +33,8 @@ class _JankenPageState extends State<JankenPage> {
   String computerHand = '✊';
   String result = '試合中';
   int matchCount = 0; //試合数を入れる変数
+
+  /// Mapで勝ち負けをカウントしていく発想はいいかも
   Map<String, int> matchResult = {
     //試合結果を記録する変数
     'Win': 0,
@@ -39,23 +42,30 @@ class _JankenPageState extends State<JankenPage> {
     'Lose': 0,
   };
 
+  /// 意味のあるまとまりで関数化した方がコードが読みやすくなる
+
+  /// ゲームをリセットする
+  void resetGame() {
+    result = '試合中';
+    matchCount = 0;
+    matchResult = {
+      //試合結果を記録する変数
+      'Win': 0,
+      'Draw': 0,
+      'Lose': 0,
+    };
+  }
+
   void selectHand(String selectedHand) {
     if (matchCount == 5) {
-      result = '試合中';
-      matchCount = 0;
-      matchResult = {
-        //試合結果を記録する変数
-        'Win': 0,
-        'Draw': 0,
-        'Lose': 0,
-      };
+      resetGame();
     }
     myHand = selectedHand;
     print(myHand);
     generateComputerHand();
     judge();
     matchCount++; //試合ごとにプラス１する
-    print('試合数：${matchCount}');
+    print('試合数：$matchCount');
     if (matchCount == 5) {
       winAndLose();
     }
@@ -84,19 +94,24 @@ class _JankenPageState extends State<JankenPage> {
   void judge() {
     if (myHand == computerHand) {
       matchResult['Draw'] = matchResult['Draw']! + 1;
-      print("自分：${myHand}, 相手：${computerHand}  引き分け");
+      print("自分：$myHand, 相手：$computerHand  引き分け");
     } else if (myHand == '✊' && computerHand == '✌️' ||
         myHand == '✌️' && computerHand == '🖐' ||
         myHand == '🖐' && computerHand == '✊') {
       matchResult['Win'] = matchResult['Win']! + 1;
-      print("自分：${myHand}, 相手：${computerHand} 勝ち");
+      print("自分：$myHand, 相手：$computerHand 勝ち");
     } else {
       matchResult['Lose'] = matchResult['Lose']! + 1;
-      print("自分：${myHand}, 相手：${computerHand} 負け");
+      print("自分：$myHand, 相手：$computerHand 負け");
     }
   }
 
   //５試合の結果を出力
+
+  // これだと勝っているのに負け判定になる場合がありそう。
+  // たとえば...
+  //  引き分け・引き分け・引き分け・引き分け・勝ち
+  // このときも負け判定になってしまう
   void winAndLose() {
     if (matchResult['Win']! >= 3) {
       result = '勝ち';
@@ -122,6 +137,7 @@ class _JankenPageState extends State<JankenPage> {
               style: const TextStyle(fontSize: 32),
             ),
             const SizedBox(height: 15),
+            // ...{} で展開できるのか。知らなかった。
             if (matchCount == 5) ...{
               Text(
                 '勝ち:${matchResult['Win']}回 負け:${matchResult['Lose']}回 引き分け:${matchResult['Draw']}回',
@@ -130,7 +146,7 @@ class _JankenPageState extends State<JankenPage> {
               const SizedBox(height: 15),
             },
             Text(
-              '試合数：${matchCount}試合目',
+              '試合数：$matchCount試合目',
               style: const TextStyle(fontSize: 32),
             ),
             const SizedBox(height: 48),
