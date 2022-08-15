@@ -150,18 +150,21 @@ class _JankenPageState extends ConsumerState<JankenPage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
+                  key: const ValueKey('unit_one'),
                   onPressed: () {
                     selectHand('✊');
                   },
                   child: const Text('✊'),
                 ),
                 ElevatedButton(
+                  key: const ValueKey('unit_two'),
                   onPressed: () {
                     selectHand('✌️');
                   },
                   child: const Text('✌️'),
                 ),
                 ElevatedButton(
+                  key: const ValueKey('unit_three'),
                   onPressed: () {
                     selectHand('🖐');
                   },
