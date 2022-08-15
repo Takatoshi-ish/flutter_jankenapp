@@ -1,8 +1,10 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'view_model.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -15,52 +17,47 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const JankenPage(),
+      home: JankenPage(ViewModel()),
     );
   }
 }
 
-class JankenPage extends StatefulWidget {
-  const JankenPage({Key? key}) : super(key: key);
+class JankenPage extends ConsumerStatefulWidget {
+  final ViewModel viewModel;
+  const JankenPage(this.viewModel, {Key? key}) : super(key: key);
 
   @override
-  State<JankenPage> createState() => _JankenPageState();
+  ConsumerState<JankenPage> createState() => _JankenPageState();
 }
 
-class _JankenPageState extends State<JankenPage> {
+class _JankenPageState extends ConsumerState<JankenPage> {
+  late ViewModel _viewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    _viewModel = widget.viewModel;
+    _viewModel.setRef(ref);
+  }
+
   String myHand = '✊';
   String computerHand = '✊';
   String result = '試合中';
-  int matchCount = 0; //試合数を入れる変数
-  Map<String, int> matchResult = {
-    //試合結果を記録する変数
-    'Win': 0,
-    'Draw': 0,
-    'Lose': 0,
-  };
 
   void resetGame() {
     result = '試合中';
-    matchCount = 0;
-    matchResult = {
-      //試合結果を記録する変数
-      'Win': 0,
-      'Draw': 0,
-      'Lose': 0,
-    };
+    _viewModel.onReset();
   }
 
   void selectHand(String selectedHand) {
-    if (matchCount == 5) {
+    if (_viewModel.matchCount == 5) {
       resetGame();
     }
     myHand = selectedHand;
     print(myHand);
     generateComputerHand();
     judge();
-    matchCount++; //試合ごとにプラス１する
-    print('試合数：$matchCount');
-    if (matchCount == 5) {
+    if (_viewModel.matchCount == 5) {
       winAndLose();
     }
     setState(() {});
@@ -87,24 +84,25 @@ class _JankenPageState extends State<JankenPage> {
 
   void judge() {
     if (myHand == computerHand) {
-      matchResult['Draw'] = matchResult['Draw']! + 1;
+      _viewModel.onDraw();
       print("自分：$myHand, 相手：$computerHand  引き分け");
     } else if (myHand == '✊' && computerHand == '✌️' ||
         myHand == '✌️' && computerHand == '🖐' ||
         myHand == '🖐' && computerHand == '✊') {
-      matchResult['Win'] = matchResult['Win']! + 1;
+      _viewModel.onWin();
       print("自分：$myHand, 相手：$computerHand 勝ち");
     } else {
-      matchResult['Lose'] = matchResult['Lose']! + 1;
+      _viewModel.onLose();
       print("自分：$myHand, 相手：$computerHand 負け");
     }
   }
 
   //５試合の結果を出力
   void winAndLose() {
-    if (matchResult['Win']! > matchResult['Lose']!) {
+    debugPrint("WinAndLose");
+    if (_viewModel.winCount > _viewModel.loseCount!) {
       result = '勝ち';
-    } else if (matchResult['Win'] == matchResult['Lose']) {
+    } else if (_viewModel.winCount == _viewModel.loseCount) {
       result = '引き分け';
     } else {
       result = '負け';
@@ -126,15 +124,15 @@ class _JankenPageState extends State<JankenPage> {
               style: const TextStyle(fontSize: 32),
             ),
             const SizedBox(height: 15),
-            if (matchCount == 5) ...{
+            if (_viewModel.matchCount == 5) ...{
               Text(
-                '勝ち:${matchResult['Win']}回 負け:${matchResult['Lose']}回 引き分け:${matchResult['Draw']}回',
+                '勝ち:${_viewModel.winCount}回 負け:${_viewModel.loseCount} 引き分け:${_viewModel.drawCount}回',
                 style: const TextStyle(fontSize: 25),
               ),
               const SizedBox(height: 15),
             },
             Text(
-              '試合数：$matchCount試合目',
+              '試合数：${_viewModel.matchCount}試合目',
               style: const TextStyle(fontSize: 32),
             ),
             const SizedBox(height: 48),
